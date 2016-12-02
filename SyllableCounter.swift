@@ -11,15 +11,84 @@
 
 import UIKit
 
-class SyllableCounter {
+@available(iOS 9.0, *)
+public class SyllableCounter {
   
   // MARK: - Shared instance
   
-  static let shared = SyllableCounter()
+  public static let shared = SyllableCounter()
   
   // MARK: - Private properties
   
-  private var exceptions: [String: Int]!
+  private var exceptions: [String: Int] = [
+    "brutes": 1,
+    "chummed": 1,
+    "flapped": 1,
+    "foamed": 1,
+    "gaped": 1,
+    "h'm": 1,
+    "lb": 1,
+    "mimes": 1,
+    "ms": 1,
+    "peeped": 1,
+    "sheered": 1,
+    "st": 1,
+    "queue": 1,
+    "none": 1,
+    "leaves": 1,
+    "awesome": 2,
+    "60": 2,
+    "capered": 2,
+    "caressed": 2,
+    "clattered": 2,
+    "deafened": 2,
+    "dr": 2,
+    "effaced": 2,
+    "effaces": 2,
+    "fringed": 2,
+    "greyish": 2,
+    "jr": 2,
+    "mangroves": 2,
+    "messieurs": 2,
+    "motioned": 2,
+    "moustaches": 2,
+    "mr": 2,
+    "mrs": 2,
+    "pencilled": 2,
+    "poleman": 2,
+    "quivered": 2,
+    "reclined": 2,
+    "shivered": 2,
+    "sidespring": 2,
+    "slandered": 2,
+    "sombre": 2,
+    "sr": 2,
+    "stammered": 2,
+    "suavely": 2,
+    "tottered": 2,
+    "trespassed": 2,
+    "truckle": 2,
+    "unstained": 2,
+    "therefore": 2,
+    "businesses": 3,
+    "bottleful": 3,
+    "discoloured": 3,
+    "disinterred": 3,
+    "hemispheres": 3,
+    "manoeuvred": 3,
+    "sepulchre": 3,
+    "shamefully": 3,
+    "unexpressed": 3,
+    "veriest": 3,
+    "wyoming": 3,
+    "etc": 4,
+    "sailmaker": 4,
+    "satiated": 4,
+    "sententiously": 4,
+    "particularized": 5,
+    "unostentatious": 5,
+    "propitiatory": 6,
+    ]
   
   private var addSyllables: [NSRegularExpression]!
   private var subSyllables: [NSRegularExpression]!
@@ -30,23 +99,18 @@ class SyllableCounter {
   
   private enum SyllableCounterError: Error {
     case badRegex(String)
-    case missingExceptionsDataAsset
     case badExceptionsData(String)
   }
   
   // MARK: - Constructors
   
-  init() {
+  public init() {
     do {
       try populateAddSyllables()
       try populateSubSyllables()
-      try populateExceptions()
     }
     catch SyllableCounterError.badRegex(let pattern) {
       print("Bad Regex pattern: \(pattern)")
-    }
-    catch SyllableCounterError.missingExceptionsDataAsset {
-      print("Missing exceptions dataset.")
     }
     catch SyllableCounterError.badExceptionsData(let info) {
       print("Problem parsing exceptions dataset: \(info)")
@@ -74,32 +138,6 @@ class SyllableCounter {
       "ves$", "geous$", "gious$", "[^aeiou]eful$", ".red$"])
   }
   
-  private func populateExceptions() throws {
-    guard let exceptionsDataAsset = NSDataAsset(name: "SyllableCounter-Exceptions") else {
-      throw SyllableCounterError.missingExceptionsDataAsset
-    }
-    
-    guard let exceptionsList = String(data: exceptionsDataAsset.data, encoding: String.Encoding.utf8) else {
-      throw SyllableCounterError.badExceptionsData("Not UTF-8 encoded")
-    }
-    
-    exceptions = [String: Int]()
-    
-    for exception in exceptionsList.components(separatedBy: .newlines) {
-      if !exception.isEmpty && exception.characters.first != "#" { // skip empty lines and lines beginning with #
-        let exceptionItemParts = exception.components(separatedBy: " ")
-        if exceptionItemParts.count != 2 {
-          throw SyllableCounterError.badExceptionsData("Unexpected line: \(exception)")
-        }
-        
-        let key = exceptionItemParts[1]
-        let value = Int(exceptionItemParts[0])
-        
-        exceptions[key] = value
-      }
-    }
-  }
-  
   private func buildRegexes(forPatterns patterns: [String]) throws -> [NSRegularExpression] {
     return try patterns.map { pattern -> NSRegularExpression in
       do {
@@ -114,7 +152,7 @@ class SyllableCounter {
   
   // MARK: - Public methods
   
-  func count(word: String) -> Int {
+  public func count(word: String) -> Int {
     if word.characters.count <= 1 {
       return word.characters.count
     }
@@ -156,12 +194,12 @@ class SyllableCounter {
     
     return (count > 0) ? count : 1
   }
-  
 }
 
+@available(iOS 9.0, *)
 extension String {
   
-  var syllables: Int {
+  public var syllables: Int {
     return SyllableCounter.shared.count(word: self)
   }
 }
