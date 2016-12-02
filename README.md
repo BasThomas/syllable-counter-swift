@@ -5,9 +5,8 @@ Lightweight library to count syllables in words, based on the excellent Java imp
 Xcode 8.0 or greater. Uses Swift 3.0.
 
 ## Installation
-There's no sample project here. No CocoaPods integration needed. Just follow these steps:
+There's no sample project here. No CocoaPods integration needed. Just do the following:
  1. Copy `SyllableCounter.swift` into your Xcode project.
- 2. Add `SyllableCounter-Exceptions.txt` into your `Assets.xcassets` bundle as a data asset. Name the asset `SyllableCounter-Exceptions`.
 
 ## How to use
 SyllableCounter uses a shared instance that is initialized on first use.
