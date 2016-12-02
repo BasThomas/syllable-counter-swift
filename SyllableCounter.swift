@@ -11,7 +11,6 @@
 
 import UIKit
 
-@available(iOS 9.0, *)
 public class SyllableCounter {
   
   // MARK: - Shared instance
@@ -152,7 +151,7 @@ public class SyllableCounter {
   
   // MARK: - Public methods
   
-  public func count(word: String) -> Int {
+  internal func count(word: String) -> Int {
     if word.characters.count <= 1 {
       return word.characters.count
     }
@@ -196,10 +195,9 @@ public class SyllableCounter {
   }
 }
 
-@available(iOS 9.0, *)
 extension String {
   
-  public var syllables: Int {
+  internal var syllables: Int {
     return SyllableCounter.shared.count(word: self)
   }
 }
